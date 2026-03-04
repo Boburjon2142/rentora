@@ -1,0 +1,29 @@
+﻿{% extends 'base.html' %}
+{% block title %}{{ property.title }}{% endblock %}
+{% block content %}
+<article class="card detail-card">
+  <div class="detail-gallery">
+    {% for img in property.images.all|slice:":3" %}
+      <img src="{{ img.image.url }}" alt="{{ property.title }} rasmi {{ forloop.counter }}" />
+    {% empty %}
+      <div class="property-modal__empty">Rasm mavjud emas</div>
+    {% endfor %}
+  </div>
+
+  <div class="detail-top">
+    <p class="chip">{{ property.get_property_type_display }}</p>
+    <p class="muted">Ko'rishlar: {{ property.view_count }}</p>
+  </div>
+
+  <h1>{{ property.title }}</h1>
+  <p class="muted">{{ property.city }} - {{ property.address }}</p>
+  {% if property.district %}
+    <p class="muted">{{ property.get_district_display }}</p>
+  {% endif %}
+  <p class="price">${{ property.price }}</p>
+  <p class="meta">{{ property.bedrooms }} xona | {{ property.bathrooms }} hammom | {{ property.area_m2 }} m2</p>
+
+  <hr class="divider" />
+  <p class="description">{{ property.description }}</p>
+</article>
+{% endblock %}

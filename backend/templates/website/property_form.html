@@ -1,0 +1,94 @@
+﻿{% extends 'base.html' %}
+{% block title %}Yangi e'lon{% endblock %}
+{% block content %}
+<section class="section-head">
+  <div>
+    <h1>Yangi e'lon qo'shish</h1>
+    <p class="muted">Maydonlarni to'ldiring va e'lonni saqlang.</p>
+  </div>
+</section>
+
+<form method="post" enctype="multipart/form-data" class="form-card">
+  {% csrf_token %}
+  {% if form.non_field_errors %}
+    <div class="form-errors">{{ form.non_field_errors }}</div>
+  {% endif %}
+
+  <div class="form-grid">
+    <div class="field field-wide">
+      <label for="{{ form.title.id_for_label }}">Sarlavha</label>
+      {{ form.title }}
+      {{ form.title.errors }}
+    </div>
+
+    <div class="field field-wide">
+      <label for="{{ form.description.id_for_label }}">Tavsif</label>
+      {{ form.description }}
+      {{ form.description.errors }}
+    </div>
+
+    <div class="field">
+      <label for="{{ form.property_type.id_for_label }}">Turi</label>
+      {{ form.property_type }}
+      {{ form.property_type.errors }}
+    </div>
+
+    <div class="field">
+      <label for="{{ form.city.id_for_label }}">Shahar</label>
+      {{ form.city }}
+      {{ form.city.errors }}
+    </div>
+
+    <div class="field">
+      <label for="{{ form.district.id_for_label }}">Qarshi hududi</label>
+      {{ form.district }}
+      {{ form.district.errors }}
+    </div>
+
+    <div class="field field-wide">
+      <label for="{{ form.address.id_for_label }}">Manzil</label>
+      {{ form.address }}
+      {{ form.address.errors }}
+    </div>
+
+    <div class="field">
+      <label for="{{ form.price.id_for_label }}">Narx</label>
+      {{ form.price }}
+      {{ form.price.errors }}
+    </div>
+
+    <div class="field">
+      <label for="{{ form.bedrooms.id_for_label }}">Xonalar</label>
+      {{ form.bedrooms }}
+      {{ form.bedrooms.errors }}
+    </div>
+
+    <div class="field">
+      <label for="{{ form.bathrooms.id_for_label }}">Hammomlar</label>
+      {{ form.bathrooms }}
+      {{ form.bathrooms.errors }}
+    </div>
+
+    <div class="field">
+      <label for="{{ form.area_m2.id_for_label }}">Maydon (m2)</label>
+      {{ form.area_m2 }}
+      {{ form.area_m2.errors }}
+    </div>
+
+    <div class="field field-wide">
+      <label for="{{ form.images.id_for_label }}">Rasmlar (maks. 3 ta)</label>
+      {{ form.images }}
+      {% if form.images.help_text %}<small class="muted">{{ form.images.help_text }}</small>{% endif %}
+      {{ form.images.errors }}
+    </div>
+
+    <div class="field field-checkbox">
+      <label for="{{ form.is_premium.id_for_label }}">Premium</label>
+      {{ form.is_premium }}
+      {{ form.is_premium.errors }}
+    </div>
+  </div>
+
+  <button type="submit" class="btn">Saqlash</button>
+</form>
+{% endblock %}

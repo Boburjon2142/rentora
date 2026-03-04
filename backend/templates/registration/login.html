@@ -1,0 +1,15 @@
+﻿{% extends 'base.html' %}
+{% block title %}Kirish{% endblock %}
+{% block content %}
+<section class="auth-wrap">
+  <div class="form-card auth-card">
+    <h1>Kirish</h1>
+    <p class="muted">Akkauntingizga kirib, e'lonlar bilan ishlang.</p>
+    <form method="post">
+      {% csrf_token %}
+      {{ form.as_p }}
+      <button type="submit" class="btn">Kirish</button>
+    </form>
+  </div>
+</section>
+{% endblock %}

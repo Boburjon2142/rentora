@@ -1,0 +1,15 @@
+﻿{% extends 'base.html' %}
+{% block title %}Ro'yxatdan o'tish{% endblock %}
+{% block content %}
+<section class="auth-wrap">
+  <div class="form-card auth-card">
+    <h1>Ro'yxatdan o'tish</h1>
+    <p class="muted">Yangi akkaunt yarating va e'lon joylashtiring.</p>
+    <form method="post">
+      {% csrf_token %}
+      {{ form.as_p }}
+      <button type="submit" class="btn">Yuborish</button>
+    </form>
+  </div>
+</section>
+{% endblock %}

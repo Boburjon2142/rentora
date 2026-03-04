@@ -1,0 +1,88 @@
+﻿{% extends 'base.html' %}
+{% block title %}E'lonlar{% endblock %}
+{% block content %}
+<section class="section-head">
+  <div>
+    <h1>E'lonlar</h1>
+    <p class="muted">Mos xonadonni topish uchun filterlardan foydalaning.</p>
+  </div>
+</section>
+
+<form method="get" class="filter-panel">
+  <input type="text" name="q" value="{{ request.GET.q }}" placeholder="Qidiruv" />
+  <input type="text" name="city" value="{{ request.GET.city }}" placeholder="Shahar" />
+  <select name="district">
+    <option value="">Qarshi hududi</option>
+    <option value="qarshi_1_mitti" {% if request.GET.district == 'qarshi_1_mitti' %}selected{% endif %}>Qarshi 1-mitti tuman</option>
+    <option value="qarshi_2_mitti" {% if request.GET.district == 'qarshi_2_mitti' %}selected{% endif %}>Qarshi 2-mitti tuman</option>
+    <option value="qarshi_3_mitti" {% if request.GET.district == 'qarshi_3_mitti' %}selected{% endif %}>Qarshi 3-mitti tuman</option>
+    <option value="qarshi_4_mitti" {% if request.GET.district == 'qarshi_4_mitti' %}selected{% endif %}>Qarshi 4-mitti tuman</option>
+    <option value="qarshi_5_mitti" {% if request.GET.district == 'qarshi_5_mitti' %}selected{% endif %}>Qarshi 5-mitti tuman</option>
+    <option value="qarshi_6_mitti" {% if request.GET.district == 'qarshi_6_mitti' %}selected{% endif %}>Qarshi 6-mitti tuman</option>
+    <option value="qarshi_7_mitti" {% if request.GET.district == 'qarshi_7_mitti' %}selected{% endif %}>Qarshi 7-mitti tuman</option>
+  </select>
+  <select name="type">
+    <option value="">Turi</option>
+    <option value="apartment_rent" {% if request.GET.type == 'apartment_rent' %}selected{% endif %}>Kvartira ijarasi</option>
+    <option value="house_rent" {% if request.GET.type == 'house_rent' %}selected{% endif %}>Hovli ijarasi</option>
+    <option value="property_sale" {% if request.GET.type == 'property_sale' %}selected{% endif %}>Sotuv</option>
+    <option value="commercial" {% if request.GET.type == 'commercial' %}selected{% endif %}>Tijorat</option>
+    <option value="daily_rent" {% if request.GET.type == 'daily_rent' %}selected{% endif %}>Kunlik ijara</option>
+    <option value="new_construction" {% if request.GET.type == 'new_construction' %}selected{% endif %}>Yangi qurilish</option>
+  </select>
+  <select name="sort">
+    <option value="">Saralash</option>
+    <option value="newest" {% if request.GET.sort == 'newest' %}selected{% endif %}>Eng yangi</option>
+    <option value="price_asc" {% if request.GET.sort == 'price_asc' %}selected{% endif %}>Narx: arzon -> qimmat</option>
+    <option value="price_desc" {% if request.GET.sort == 'price_desc' %}selected{% endif %}>Narx: qimmat -> arzon</option>
+  </select>
+  <input type="number" name="min_price" value="{{ request.GET.min_price }}" placeholder="Min narx" />
+  <input type="number" name="max_price" value="{{ request.GET.max_price }}" placeholder="Max narx" />
+  <button type="submit" class="btn">Filter</button>
+</form>
+
+<div class="grid cards-grid">
+  {% for item in properties %}
+    <a class="card property-card card-clickable js-property-card"
+       href="{% url 'website:property_detail' item.pk %}"
+       data-detail-url="{% url 'website:property_detail' item.pk %}"
+       data-title="{{ item.title|escape }}"
+       data-type="{{ item.get_property_type_display|escape }}"
+       data-city="{{ item.city|escape }}"
+       data-address="{{ item.address|escape }}"
+       data-district="{{ item.get_district_display|default:''|escape }}"
+       data-price="${{ item.price }}"
+       data-meta="{{ item.bedrooms }} xona | {{ item.bathrooms }} hammom | {{ item.area_m2 }} m2"
+       data-description="{{ item.description|escape }}"
+       data-views="{{ item.view_count }}"
+       data-images="{% for img in item.images.all %}{{ img.image.url }}{% if not forloop.last %}|{% endif %}{% endfor %}">
+      <div class="card-top">
+        <p class="chip">{{ item.get_property_type_display }}</p>
+        {% if item.is_premium %}
+          <p class="chip chip-premium">Premium</p>
+        {% endif %}
+      </div>
+      <h3>{{ item.title }}</h3>
+      <p class="muted">{{ item.city }} - {{ item.address }}</p>
+      <p class="meta">{{ item.bedrooms }} xona | {{ item.bathrooms }} hammom | {{ item.area_m2 }} m2</p>
+      <p class="price">${{ item.price }}</p>
+      <span class="card-link">Batafsil ko'rish</span>
+    </a>
+  {% empty %}
+    <article class="empty-state">
+      <h3>E'lon topilmadi</h3>
+      <p>Filterlarni yengillashtirib qayta urinib ko'ring.</p>
+    </article>
+  {% endfor %}
+</div>
+
+<div class="pagination">
+  {% if page_obj.has_previous %}
+    <a class="page-link" href="?{% if query_string %}{{ query_string }}&{% endif %}page={{ page_obj.previous_page_number }}">Oldingi</a>
+  {% endif %}
+  <span>{{ page_obj.number }} / {{ page_obj.paginator.num_pages }}</span>
+  {% if page_obj.has_next %}
+    <a class="page-link" href="?{% if query_string %}{{ query_string }}&{% endif %}page={{ page_obj.next_page_number }}">Keyingi</a>
+  {% endif %}
+</div>
+{% endblock %}

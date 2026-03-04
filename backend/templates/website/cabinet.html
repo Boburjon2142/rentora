@@ -1,0 +1,101 @@
+﻿{% extends 'base.html' %}
+{% block title %}Shaxsiy kabinet{% endblock %}
+{% block content %}
+<section class="section-head">
+  <div>
+    <h1>Shaxsiy kabinet</h1>
+    <p class="muted">Profil ma'lumotlari va e'lonlaringizni boshqaring.</p>
+  </div>
+</section>
+
+<section class="cabinet-stats">
+  <article class="cabinet-stat card">
+    <p class="muted">Jami e'lonlar</p>
+    <h3>{{ my_properties_count }}</h3>
+  </article>
+  <article class="cabinet-stat card">
+    <p class="muted">Faol e'lonlar</p>
+    <h3>{{ my_active_count }}</h3>
+  </article>
+  <article class="cabinet-stat card">
+    <p class="muted">Premium e'lonlar</p>
+    <h3>{{ my_premium_count }}</h3>
+  </article>
+</section>
+
+<section class="cabinet-grid">
+  <article class="form-card">
+    <h2>Profil ma'lumotlari</h2>
+    <form method="post" class="profile-form">
+      {% csrf_token %}
+      {% if form.non_field_errors %}
+        <div class="form-errors">{{ form.non_field_errors }}</div>
+      {% endif %}
+      <div class="form-grid">
+        <div class="field">
+          <label for="{{ form.first_name.id_for_label }}">Ism</label>
+          {{ form.first_name }}
+          {{ form.first_name.errors }}
+        </div>
+        <div class="field">
+          <label for="{{ form.last_name.id_for_label }}">Familiya</label>
+          {{ form.last_name }}
+          {{ form.last_name.errors }}
+        </div>
+        <div class="field field-wide">
+          <label for="{{ form.email.id_for_label }}">Email</label>
+          {{ form.email }}
+          {{ form.email.errors }}
+        </div>
+        <div class="field field-wide">
+          <label for="{{ form.phone.id_for_label }}">Telefon</label>
+          {{ form.phone }}
+          {{ form.phone.errors }}
+        </div>
+      </div>
+      <button type="submit" class="btn">Saqlash</button>
+    </form>
+  </article>
+
+  <article class="card">
+    <div class="cabinet-list-head">
+      <h2>Mening e'lonlarim</h2>
+      <a class="card-link" href="{% url 'website:property_create' %}">+ Yangi e'lon</a>
+    </div>
+
+    <div class="cabinet-list">
+      {% for item in my_properties %}
+        <a class="cabinet-item js-property-card"
+           href="{% url 'website:property_detail' item.pk %}"
+           data-detail-url="{% url 'website:property_detail' item.pk %}"
+           data-title="{{ item.title|escape }}"
+           data-type="{{ item.get_property_type_display|escape }}"
+           data-city="{{ item.city|escape }}"
+           data-address="{{ item.address|escape }}"
+           data-district="{{ item.get_district_display|default:''|escape }}"
+           data-price="${{ item.price }}"
+           data-meta="{{ item.bedrooms }} xona | {{ item.bathrooms }} hammom | {{ item.area_m2 }} m2"
+           data-description="{{ item.description|escape }}"
+           data-views="{{ item.view_count }}"
+           data-images="{% for img in item.images.all %}{{ img.image.url }}{% if not forloop.last %}|{% endif %}{% endfor %}">
+          <div>
+            <h3>{{ item.title }}</h3>
+            <p class="muted">{{ item.city }} - {{ item.address }}</p>
+            {% if item.district %}<p class="muted">{{ item.get_district_display }}</p>{% endif %}
+          </div>
+          <div class="cabinet-item-meta">
+            <p class="price">${{ item.price }}</p>
+            {% if item.is_premium %}<span class="chip chip-premium">Premium</span>{% endif %}
+          </div>
+        </a>
+      {% empty %}
+        <div class="empty-state">
+          <h3>E'lonlaringiz hozircha yo'q</h3>
+          <p>Birinchi e'loningizni qo'shing.</p>
+          <a class="btn" href="{% url 'website:property_create' %}">E'lon qo'shish</a>
+        </div>
+      {% endfor %}
+    </div>
+  </article>
+</section>
+{% endblock %}

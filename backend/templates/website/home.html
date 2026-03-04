@@ -1,0 +1,66 @@
+﻿{% extends 'base.html' %}
+{% block title %}Bosh sahifa{% endblock %}
+{% block content %}
+<section class="hero">
+  <p class="eyebrow">Ijara platformasi</p>
+  <h1>O'zingizga mos xonadonni tez toping</h1>
+  <p class="hero-text">Rentora orqali ijaraga uy, kvartira yoki tijorat obyektlarini bir joyda qidiring. Shahar, narx va uy turiga qarab tez filter qiling.</p>
+  <div class="hero-actions">
+    <a class="btn" href="{% url 'website:property_list' %}">E'lonlarni ko'rish</a>
+    {% if request.user.is_authenticated %}
+      <a class="btn btn-ghost" href="{% url 'website:property_create' %}">E'lon joylash</a>
+    {% endif %}
+  </div>
+  <div class="hero-stats">
+    <div class="stat">
+      <span class="stat-value">{{ total_count }}</span>
+      <span class="stat-label">Jami e'lonlar</span>
+    </div>
+    <div class="stat">
+      <span class="stat-value">24/7</span>
+      <span class="stat-label">Faol qidiruv</span>
+    </div>
+    <div class="stat">
+      <span class="stat-value">Toshkent</span>
+      <span class="stat-label">Top shahar</span>
+    </div>
+  </div>
+</section>
+
+<section class="section-head">
+  <div>
+    <h2>So'nggi e'lonlar</h2>
+    <p class="muted">Platformadagi eng yangi joylangan takliflar.</p>
+  </div>
+</section>
+
+<div class="grid cards-grid">
+  {% for item in latest_properties %}
+    <a class="card property-card card-clickable js-property-card"
+       href="{% url 'website:property_detail' item.pk %}"
+       data-detail-url="{% url 'website:property_detail' item.pk %}"
+       data-title="{{ item.title|escape }}"
+       data-type="{{ item.get_property_type_display|escape }}"
+       data-city="{{ item.city|escape }}"
+       data-address="{{ item.address|escape }}"
+       data-district="{{ item.get_district_display|default:''|escape }}"
+       data-price="${{ item.price }}"
+      data-meta="{{ item.bedrooms }} xona | {{ item.bathrooms }} hammom | {{ item.area_m2 }} m2"
+       data-description="{{ item.description|escape }}"
+       data-views="{{ item.view_count }}"
+      data-images="{% for img in item.images.all %}{{ img.image.url }}{% if not forloop.last %}|{% endif %}{% endfor %}">
+      <p class="chip">{{ item.get_property_type_display }}</p>
+      <h3>{{ item.title }}</h3>
+      <p class="muted">{{ item.city }} - {{ item.address }}</p>
+      <p class="price">${{ item.price }}</p>
+      <span class="card-link">Batafsil ko'rish</span>
+    </a>
+  {% empty %}
+    <article class="empty-state">
+      <h3>Hozircha e'lon yo'q</h3>
+      <p>Birinchi e'lonni qo'shib, platformani ishga tushiring.</p>
+      <a class="btn" href="{% url 'website:property_create' %}">E'lon qo'shish</a>
+    </article>
+  {% endfor %}
+</div>
+{% endblock %}

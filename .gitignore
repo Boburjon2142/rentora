@@ -1,0 +1,130 @@
+# -----------------------------
+# Python bytecode and caches
+# -----------------------------
+__pycache__/
+*.py[cod]
+*$py.class
+*.pyo
+*.pyd
+.Python
+.ipynb_checkpoints/
+
+# -----------------------------
+# Virtual environments
+# -----------------------------
+.venv/
+venv/
+env/
+ENV/
+backend/.venv/
+
+# -----------------------------
+# Environment and secrets
+# -----------------------------
+.env
+.env.*
+!.env.example
+!.env.pythonanywhere.example
+*.pem
+*.key
+*.crt
+
+# -----------------------------
+# Django / app runtime files
+# -----------------------------
+*.sqlite3
+db.sqlite3
+db.sqlite3-journal
+media/
+backend/media/
+!media/.gitkeep
+!backend/media/.gitkeep
+staticfiles/
+backend/staticfiles/
+uploads/
+*.log
+logs/
+tmp/
+temp/
+
+# -----------------------------
+# Build / packaging artifacts
+# -----------------------------
+build/
+dist/
+site/
+*.egg-info/
+.eggs/
+*.egg
+pip-wheel-metadata/
+wheelhouse/
+
+# -----------------------------
+# Tool caches and reports
+# -----------------------------
+.pytest_cache/
+.mypy_cache/
+.ruff_cache/
+.pyre/
+.pytype/
+.tox/
+.nox/
+.coverage
+.coverage.*
+coverage.xml
+htmlcov/
+nosetests.xml
+pytestdebug.log
+
+# -----------------------------
+# Dependency manager lock caches
+# (keep lockfiles only if needed by your workflow)
+# -----------------------------
+__pypackages__/
+.pdm-python
+.pdm-build/
+
+# -----------------------------
+# Node / frontend artifacts
+# -----------------------------
+node_modules/
+.npm/
+.pnpm-store/
+.yarn/
+.parcel-cache/
+.next/
+out/
+dist-ssr/
+*.tsbuildinfo
+
+# -----------------------------
+# IDE and editor settings
+# -----------------------------
+.idea/
+.vscode/
+*.iml
+*.suo
+*.user
+*.userossc
+*.sln.docstates
+*.swp
+*.swo
+*~
+
+# -----------------------------
+# OS-specific files
+# -----------------------------
+.DS_Store
+Thumbs.db
+Desktop.ini
+$RECYCLE.BIN/
+
+# -----------------------------
+# Misc
+# -----------------------------
+*.bak
+*.tmp
+*.pid
+*.seed
+*.stackdump
+*.err
